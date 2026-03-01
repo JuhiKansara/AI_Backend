@@ -18,11 +18,18 @@ app.use(cors({
 app.use(express.json());
 
 // Root Route (for health check/validation)
+let dbError = null;
+mongoose.connection.on('error', (err) => {
+    dbError = err.message;
+    console.error('Mongoose connection error:', err);
+});
+
 app.get('/', (req, res) => {
     const dbStatus = mongoose.connection.readyState === 1 ? 'connected' : 'disconnected';
     res.json({
         status: 'AI Study Assistant Backend is running!',
         database: dbStatus,
+        dbError: dbError,
         message: 'If you see this, the server is alive!'
     });
 });

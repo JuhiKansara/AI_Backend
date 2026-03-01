@@ -15,13 +15,14 @@ router.post('/', async (req, res) => {
     }
 });
 
-// GET all - Retrieve all notes
 router.get('/', async (req, res) => {
     try {
+        console.log('Fetching all notes...');
         // Sorting by newest first
         const notes = await Note.find().sort({ createdAt: -1 });
         res.json(notes);
     } catch (error) {
+        console.error('GET /api/notes error:', error);
         res.status(500).json({ message: error.message });
     }
 });
