@@ -40,11 +40,22 @@ app.use('/api/ask', askRouter);
 
 // Database Connection
 const MONGODB_URI = process.env.MONGODB_URI || process.env.MONGO_URI || 'mongodb://localhost:27017/ai-study-assistant';
-mongoose.connect(MONGODB_URI)
+
+// Masked URI for logging
+const maskedURI = MONGODB_URI.replace(/\/\/(.*):(.*)@/, '//****:****@');
+console.log('Attempting to connect to:', maskedURI);
+
+mongoose.connect(MONGODB_URI, {
+    serverSelectionTimeoutMS: 5000, // Keep trying to connect for 5 seconds
+    socketTimeoutMS: 45000, // Close sockets after 45 seconds of inactivity
+})
     .then(() => console.log('Connected to MongoDB successfully'))
-    .catch((err) => console.error('MongoDB connection error:', err));
+    .catch((err) => {
+        console.error('MongoDB connection error:', err);
+        dbError = err.message;
+    });
 
 // Start API Server
-app.listen(PORT, () => {
+app.listen(PORT, '0.0.0.0', () => {
     console.log(`Server is running on port ${PORT}`);
 });
