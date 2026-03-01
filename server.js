@@ -28,7 +28,7 @@ app.use('/api/notes', notesRouter);
 app.use('/api/ask', askRouter);
 
 // Database Connection
-const MONGODB_URI = process.env.MONGODB_URI || 'mongodb://localhost:27017/ai-study-assistant';
+const MONGODB_URI = process.env.MONGODB_URI || process.env.MONGO_URI || 'mongodb://localhost:27017/ai-study-assistant';
 mongoose.connect(MONGODB_URI)
     .then(() => console.log('Connected to MongoDB successfully'))
     .catch((err) => console.error('MongoDB connection error:', err));
