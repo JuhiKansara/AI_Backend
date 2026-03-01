@@ -13,6 +13,11 @@ const PORT = process.env.PORT || 5000;
 app.use(cors());
 app.use(express.json());
 
+// Root Route (for health check/validation)
+app.get('/', (req, res) => {
+    res.send('AI Study Assistant Backend is running!');
+});
+
 // Routes
 app.use('/api/notes', notesRouter);
 app.use('/api/ask', askRouter);
