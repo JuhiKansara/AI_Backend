@@ -15,7 +15,12 @@ app.use(express.json());
 
 // Root Route (for health check/validation)
 app.get('/', (req, res) => {
-    res.send('AI Study Assistant Backend is running!');
+    const dbStatus = mongoose.connection.readyState === 1 ? 'connected' : 'disconnected';
+    res.json({
+        status: 'AI Study Assistant Backend is running!',
+        database: dbStatus,
+        message: 'If you see this, the server is alive!'
+    });
 });
 
 // Routes
